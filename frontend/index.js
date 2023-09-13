@@ -5,6 +5,7 @@ const getSelectedRating = (e)=>{
     if(e.target.classList.contains('star')){
         selectedRating = e.target.id;
     }
+    highlightRatings();
     console.log(selectedRating);
 }
 
@@ -27,6 +28,24 @@ const submitReview = async ()=>{
         console.log(error)
     }
 }
+ const highlightRatings = ()=>{
+    const ratings = document.querySelectorAll('.star');
+    ratings.forEach((rating)=>{
+        if(rating.id<=selectedRating){
+            rating.classList="active"
+        }
+    })
+ }
+
+ const getStarRating = (rating)=>{
+    const starDiv = document.createElement('div');
+     for(let i=0;i<rating;i++){
+       starDiv.innerHTML +=`<span class="star active">&#9733;</span>`
+     }
+     console.log(starDiv);
+     return starDiv;
+ }
+
 
 const getCompanyReview = async ()=>{
     const company = document.getElementById('company').value;
@@ -34,7 +53,8 @@ const getCompanyReview = async ()=>{
     try{
        let response = await axios.get(`http://localhost:4000/company-reviews/${company}`)
        const name = document.createElement('p');
-       name.textContent=`${company}`
+       name.id="reviewName"
+       name.textContent=`Company : ${company}`
        const rating = document.createElement('p');
        rating.id="averageRating"
        companyReview.appendChild(name);
@@ -46,13 +66,14 @@ const getCompanyReview = async ()=>{
         companyReview.innerHTML = `<h1>No Revieew For This Company</h1>`
        }
        response.data.forEach((review)=>{
+        const starRating = getStarRating(review.ratings);
         let reviews =`
         <div>
-        <p>Pros</p>
+        <p style="font-size:25px;color:#05386b">Pros</p>
         <p>${review.pros}</p>
-        <p>Cons</p>
+        <p style="font-size:25px;color:#05386b">Cons</p>
         <p>${review.cons}</p>
-        <p>${review.ratings}</p>
+        <div class="rating">${starRating.innerHTML}</div>
         </div>
         <hr>
         `
@@ -60,7 +81,7 @@ const getCompanyReview = async ()=>{
         companyReview.innerHTML += reviews;
        })
        let avgRating =(totalRatings/totalReview);
-       document.getElementById('averageRating').textContent=avgRating.toFixed(1);
+       document.getElementById('averageRating').textContent='Rating :'+avgRating.toFixed(1);
 
     }
     catch(error){

@@ -1,3 +1,8 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
 .rating {
     font-size: 24px;
 }
@@ -12,5 +17,28 @@
 
 .star:hover,
 .star.active {
-    color: gold;
+    color:#05386b;
+}
+
+#reviewName{
+    font-size: 35px;
+    font-weight: 700;
+    color: #05386b;
+}
+
+#averageRating{
+    font-size: 35px;
+    font-weight:700;
+    color:#05386b;
+}
+
+p{
+    font-size: 20px;
+    font-weight: 600;
+    color:black;
+
+}
+
+#review{
+    margin-left: 50px;
 }
